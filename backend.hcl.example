@@ -1,0 +1,4 @@
+# Copia este archivo como backend.hcl y sustituye el bucket.
+# backend.hcl está excluido de Git.
+bucket = "your-terraform-state-bucket"
+prefix = "terraform/state"

@@ -1,0 +1,75 @@
+# root terraform.tfvars
+#
+# Copia este archivo como terraform.tfvars y configura el ID de tu proyecto.
+# terraform.tfvars está excluido de Git y no debe contenerse en un commit.
+
+project_id = "your-gcp-project-id"
+region     = "europe-west1"
+zone       = "europe-west1-b"
+
+# --- Red (Subnets) ---
+subnets = {
+  frontend = {
+    name = "subnet-frontend"
+    cidr = "10.10.10.0/24"
+  }
+  backend = {
+    name = "subnet-backend"
+    cidr = "10.10.20.0/24"
+  }
+}
+
+# --- Seguridad (Firewall) ---
+# Reglas de entrada
+ingress_rules_list = [
+
+  # CAPA 0: GESTIÓN (SSH Seguro)
+  {
+    name          = "allow-ssh-iap"
+    description   = "Acceso SSH seguro mediante Google IAP"
+    source_ranges = ["35.235.240.0/20"] # Rango oficial de Google IAP
+    target_tags   = ["frontend-web", "backend-app"]
+    protocol      = "tcp"
+    ports         = ["22"]
+  },
+  {
+    name          = "allow-internal-icmp"
+    description   = "Permite ICMP entre subredes privadas"
+    source_ranges = ["10.10.0.0/16"]
+    target_tags   = ["frontend-web", "backend-app"]
+    protocol      = "icmp"
+    ports         = []
+  },
+
+  # CAPA 1: FRONTEND (Acceso Público)
+  {
+    name          = "allow-http-web-public"
+    description   = "Acceso HTTP y HTTPS público al frontend"
+    source_ranges = ["0.0.0.0/0"]
+    target_tags   = ["frontend-web"]
+    protocol      = "tcp"
+    ports         = ["80", "443"]
+  },
+
+  # CAPA 2: BACKEND (Tráfico Interno)
+  {
+    name          = "allow-internal-web-to-app"
+    description   = "Tráfico interno del frontend al backend"
+    source_ranges = ["10.10.10.0/24"] # Solo tráfico desde la subnet frontend
+    target_tags   = ["backend-app"]    # Solo aplica a las máquinas backend
+    protocol      = "tcp"
+    ports         = ["5000"]
+  }
+]
+
+# Reglas de salida
+egress_rules_list = [
+  {
+    name               = "allow-egress-internet"
+    description        = "Permite salida HTTP y HTTPS para actualizaciones"
+    destination_ranges = ["0.0.0.0/0"]
+    target_tags        = ["frontend-web", "backend-app"]
+    protocol           = "tcp"
+    ports              = ["80", "443"]
+  }
+]

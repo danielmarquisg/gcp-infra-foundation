@@ -1,0 +1,43 @@
+# Terraform working directory
+**/.terraform/*
+
+# Terraform state can contain IDs, IPs, metadata and secrets
+*.tfstate
+*.tfstate.*
+
+# Environment-specific variables
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+!*.tfvars.json.example
+
+# Backend configuration containing the real bucket name
+backend.hcl
+*.backend.hcl
+
+# Saved plans and crash logs
+*.tfplan
+*.plan
+tfplan
+crash.log
+crash.*.log
+
+# Local CLI configuration and overrides
+.terraformrc
+terraform.rc
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Credentials and private keys
+*.pem
+*.key
+*credentials*.json
+*service-account*.json
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+*.swp
