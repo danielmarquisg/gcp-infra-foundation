@@ -1,7 +1,6 @@
 # modules/instances/main.tf
 
 variable "project_id" {}
-variable "region" {}
 variable "zone" {}
 
 variable "name_prefix" {

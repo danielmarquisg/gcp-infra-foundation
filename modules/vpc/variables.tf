@@ -1,7 +1,6 @@
 # modules/vpc/variables.tf
 
 variable "project_id" {}
-variable "region" {}
 
 variable "network_name" {
   description = "Nombre de la VPC"

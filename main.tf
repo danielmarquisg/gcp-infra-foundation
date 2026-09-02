@@ -8,7 +8,6 @@
 module "vpc" {
   source       = "./modules/vpc"
   project_id   = var.project_id
-  region       = var.region
   network_name = "${var.project_id}-vpc"
   routing_mode = "REGIONAL"
 }
@@ -54,7 +53,6 @@ module "web_instances" {
   source = "./modules/instances"
 
   project_id = var.project_id
-  region     = var.region
   zone       = var.zone
 
   name_prefix    = "frontend-nginx"
@@ -73,7 +71,6 @@ module "app_instances" {
   source = "./modules/instances"
 
   project_id = var.project_id
-  region     = var.region
   zone       = var.zone
 
   name_prefix    = "backend-flask"
