@@ -18,11 +18,6 @@ module "subnets" {
   region       = var.region
   network_name = module.vpc.network_name
   subnets      = var.subnets
-
-  # DEPENDENCIA EXPLÍCITA
-  # Aunque Terraform ya lo sabe por "network_name" (implícita), esto fuerza
-  # a que el módulo VPC termine todas sus operaciones antes de empezar aquí.
-  depends_on = [module.vpc]
 }
 
 module "firewall-rules" {
@@ -31,8 +26,6 @@ module "firewall-rules" {
   network_name  = module.vpc.network_name
   ingress_rules = var.ingress_rules_list
   egress_rules  = var.egress_rules_list
-
-  depends_on = [module.subnets]
 }
 
 # ==============================================================================
@@ -59,11 +52,9 @@ module "web_instances" {
   instance_count = 2
   machine_type   = "e2-micro"
 
-  subnet_name      = var.subnets["frontend"].name
+  subnet_self_link = module.subnets.subnets["frontend"].self_link
   tags             = ["frontend-web"]
   enable_public_ip = true
-
-  depends_on = [module.subnets]
 }
 
 # --- Software Tier 2: Backend (Private / Flask) ---
@@ -77,9 +68,7 @@ module "app_instances" {
   instance_count = 2
   machine_type   = "e2-medium"
 
-  subnet_name      = var.subnets["backend"].name
+  subnet_self_link = module.subnets.subnets["backend"].self_link
   tags             = ["backend-app"]
   enable_public_ip = false
-
-  depends_on = [module.subnets]
 }

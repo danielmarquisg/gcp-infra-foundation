@@ -21,8 +21,8 @@ variable "machine_type" {
   default     = "e2-micro"
 }
 
-variable "subnet_name" {
-  description = "Nombre de la subred donde se conectaran"
+variable "subnet_self_link" {
+  description = "Self link de la subred donde se conectarán las máquinas"
   type        = string
 }
 

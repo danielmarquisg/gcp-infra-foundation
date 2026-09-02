@@ -15,7 +15,7 @@ resource "google_compute_instance" "vm" {
   }
 
   network_interface {
-    subnetwork = var.subnet_name
+    subnetwork = var.subnet_self_link
 
     # Lógica de IP Publica
     dynamic "access_config" {

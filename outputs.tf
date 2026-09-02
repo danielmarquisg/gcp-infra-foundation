@@ -16,7 +16,7 @@ output "subnets_details" {
     # Iteramos sobre cada subred creada
     for subnet in module.subnets.subnets : subnet.name => {
       id      = subnet.id
-      cidr    = subnet.ip_cidr_range
+      cidr    = subnet.cidr
       gateway = subnet.gateway_address
       region  = subnet.region
     }
