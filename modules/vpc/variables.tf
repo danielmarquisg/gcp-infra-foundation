@@ -1,6 +1,9 @@
 # modules/vpc/variables.tf
 
-variable "project_id" {}
+variable "project_id" {
+  description = "ID del proyecto de GCP donde se creará la VPC"
+  type        = string
+}
 
 variable "network_name" {
   description = "Nombre de la VPC"

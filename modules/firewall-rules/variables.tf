@@ -1,7 +1,14 @@
 # modules/firewall-rules/variables.tf
 
-variable "project_id" {}
-variable "network_name" {}
+variable "project_id" {
+  description = "ID del proyecto de GCP donde se crearán las reglas de firewall"
+  type        = string
+}
+
+variable "network_name" {
+  description = "Nombre de la VPC donde se aplicarán las reglas de firewall"
+  type        = string
+}
 
 # Entrada
 variable "ingress_rules" {

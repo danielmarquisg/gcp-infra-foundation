@@ -1,7 +1,14 @@
-# modules/instances/main.tf
+# modules/instances/variables.tf
 
-variable "project_id" {}
-variable "zone" {}
+variable "project_id" {
+  description = "ID del proyecto de GCP donde se crearán las máquinas"
+  type        = string
+}
+
+variable "zone" {
+  description = "Zona de GCP donde se crearán las máquinas"
+  type        = string
+}
 
 variable "name_prefix" {
   description = "Prefijo para el nombre de las maquinas (ej: web-server)"
@@ -34,6 +41,7 @@ variable "tags" {
 
 variable "image" {
   description = "Imagen del SO"
+  type        = string
   default     = "debian-cloud/debian-12"
 }
 
