@@ -5,7 +5,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 5.0" # "~>" permite 5.1, 5.2, etc., pero NO 6.0
+      version = "~> 7.0" # Permite versiones 7.x, pero no 8.0
     }
   }
 }
