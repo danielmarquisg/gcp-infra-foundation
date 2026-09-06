@@ -5,8 +5,8 @@ output "instances_info" {
   value = [
     for vm in google_compute_instance.vm : {
       name        = vm.name
-      internal_ip = vm.network_interface.0.network_ip
-      public_ip   = length(vm.network_interface.0.access_config) > 0 ? vm.network_interface.0.access_config.0.nat_ip : null
+      internal_ip = vm.network_interface[0].network_ip
+      public_ip   = length(vm.network_interface[0].access_config) > 0 ? vm.network_interface[0].access_config[0].nat_ip : null
     }
   ]
 }
