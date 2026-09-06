@@ -2,7 +2,7 @@
 
 variable "project_id" {
   description = "ID del proyecto de GCP (gcp-infra-foundation-dm)"
-  type=string
+  type        = string
 }
 
 variable "region" {
