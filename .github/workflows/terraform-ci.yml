@@ -48,6 +48,7 @@ jobs:
       - name: Initialize TFLint plugins
         run: tflint --init
         env:
+          # Token temporal de GitHub para descargar plugins; no es una credencial de Google Cloud.
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
