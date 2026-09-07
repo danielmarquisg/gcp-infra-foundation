@@ -30,6 +30,12 @@ jobs:
           terraform_version: "1.16.1"
           terraform_wrapper: false
 
+      - name: Set up TFLint
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: "v0.64.0"
+          cache: true
+
       - name: Check formatting
         run: terraform fmt -check -recursive -diff
 
@@ -38,3 +44,11 @@ jobs:
 
       - name: Validate configuration
         run: terraform validate -no-color
+
+      - name: Initialize TFLint plugins
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Run TFLint
+        run: tflint --recursive --format compact
