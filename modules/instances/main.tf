@@ -17,11 +17,11 @@ resource "google_compute_instance" "vm" {
   network_interface {
     subnetwork = var.subnet_self_link
 
-    # Lógica de IP Publica
+    # Solo crea access_config para las VMs que necesitan una IP pública.
     dynamic "access_config" {
       for_each = var.enable_public_ip ? [1] : []
       content {
-        # Vacio = IP Efimera automatica
+        # Al no definir nat_ip, GCP asigna automáticamente una IP pública efímera.
       }
     }
   }
