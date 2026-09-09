@@ -13,7 +13,7 @@ output "vpc_id" {
 output "subnets_details" {
   description = "Mapa consolidado con toda la información de las subredes"
   value = {
-    # Iteramos sobre cada subred creada
+    # Para la consulta final usamos el nombre de GCP como clave, no la clave de var.subnets.
     for subnet in module.subnets.subnets : subnet.name => {
       id      = subnet.id
       cidr    = subnet.cidr
@@ -34,6 +34,7 @@ output "frontend_web_info" {
 }
 
 output "backend_internal_info" {
+  # Conserva el mismo esquema de salida que las VMs públicas, con public_ip = null.
   description = "Solo IPs Internas de los servidores de Backend"
   value       = module.app_instances.instances_info
 }

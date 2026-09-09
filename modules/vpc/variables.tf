@@ -12,6 +12,7 @@ variable "network_name" {
 }
 
 variable "routing_mode" {
+  # Controla el alcance de las rutas dinámicas de Cloud Router, no la ubicación de la VPC.
   description = "Modo de enrutamiento de la VPC (GLOBAL o REGIONAL)"
   type        = string
   default     = "GLOBAL"

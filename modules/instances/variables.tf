@@ -21,6 +21,7 @@ variable "instance_count" {
   default     = 1
 
   validation {
+    # El tipo number también acepta decimales; floor comprueba que no haya parte fraccionaria.
     condition     = var.instance_count >= 0 && floor(var.instance_count) == var.instance_count
     error_message = "La cantidad de instancias debe ser un número entero mayor o igual que 0."
   }
@@ -44,6 +45,7 @@ variable "tags" {
 }
 
 variable "image" {
+  # La familia debian-12 selecciona una imagen vigente; no fija una versión exacta del disco.
   description = "Imagen del SO"
   type        = string
   default     = "debian-cloud/debian-12"

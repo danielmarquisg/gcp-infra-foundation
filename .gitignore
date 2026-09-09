@@ -1,28 +1,28 @@
-# Terraform working directory
+# Dependencias descargadas y configuración local generada por Terraform
 **/.terraform/*
 
-# Terraform state can contain IDs, IPs, metadata and secrets
+# El estado puede contener IDs, IPs, metadatos y secretos
 *.tfstate
 *.tfstate.*
 
-# Environment-specific variables
+# Valores del entorno; conservamos los ejemplos para documentar cómo configurarlos
 *.tfvars
 *.tfvars.json
 !*.tfvars.example
 !*.tfvars.json.example
 
-# Backend configuration containing the real bucket name
+# Configuración local del backend con el nombre real del bucket
 backend.hcl
 *.backend.hcl
 
-# Saved plans and crash logs
+# Los planes guardados pueden incluir valores sensibles; los logs son diagnósticos locales
 *.tfplan
 *.plan
 tfplan
 crash.log
 crash.*.log
 
-# Local CLI configuration and overrides
+# Configuración local de la CLI y archivos que sobrescriben la configuración Terraform
 .terraformrc
 terraform.rc
 override.tf
@@ -30,14 +30,17 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Credentials and private keys
+# Credenciales y claves privadas
 *.pem
 *.key
 *credentials*.json
 *service-account*.json
 
-# Editor and operating-system files
+# Archivos del editor y del sistema operativo
 .DS_Store
 .idea/
 .vscode/
 *.swp
+
+# .terraform.lock.hcl sí se versiona para compartir versiones y hashes de los providers.
+# Ignorar un archivo no elimina versiones que ya se hayan guardado en Git.

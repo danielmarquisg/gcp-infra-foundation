@@ -2,6 +2,7 @@
 
 # Reglas de entrada
 resource "google_compute_firewall" "ingress_rules" {
+  # Usamos nombres únicos como claves para que reordenar la lista no cambie la identidad de las reglas.
   for_each = { for r in var.ingress_rules : r.name => r }
 
   name          = each.value.name
@@ -20,6 +21,7 @@ resource "google_compute_firewall" "ingress_rules" {
 
 # Reglas de salida
 resource "google_compute_firewall" "egress_rules" {
+  # Estas reglas permiten tráfico; no crean rutas ni NAT para acceder a Internet.
   for_each = { for r in var.egress_rules : r.name => r }
 
   name               = each.value.name

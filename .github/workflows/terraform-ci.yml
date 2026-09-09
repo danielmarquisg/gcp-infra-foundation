@@ -1,5 +1,6 @@
 name: Terraform CI
 
+# Revisamos cada PR hacia main y volvemos a comprobar main tras incorporar los cambios.
 on:
   push:
     branches:
@@ -9,6 +10,7 @@ on:
       - main
 
 permissions:
+  # Este workflow solo necesita leer el código del repositorio.
   contents: read
 
 env:
@@ -16,6 +18,7 @@ env:
 
 jobs:
   validate:
+    # El ruleset de main exige este nombre exacto; cambiarlo requiere actualizar la regla.
     name: Format and validate
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -34,12 +37,14 @@ jobs:
         uses: terraform-linters/setup-tflint@v6
         with:
           tflint_version: "v0.64.0"
+          # Reutiliza plugins; la acción usa la configuración de TFLint para identificar la caché.
           cache: true
 
       - name: Check formatting
         run: terraform fmt -check -recursive -diff
 
       - name: Initialize Terraform
+        # Descarga dependencias sin acceder al backend del estado ni pedir respuestas interactivas.
         run: terraform init -backend=false -input=false -no-color
 
       - name: Validate configuration
@@ -48,8 +53,10 @@ jobs:
       - name: Initialize TFLint plugins
         run: tflint --init
         env:
-          # Token temporal de GitHub para descargar plugins; no es una credencial de Google Cloud.
+          # Token temporal de GitHub: autentica las descargas y aumenta el límite de peticiones.
+          # Lo proporciona GitHub automáticamente; no hace falta crear una clave de Google Cloud.
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
+        # Incluye los módulos; compact produce mensajes compatibles con las anotaciones de la acción.
         run: tflint --recursive --format compact
