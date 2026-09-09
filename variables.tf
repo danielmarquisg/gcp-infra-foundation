@@ -12,12 +12,14 @@ variable "region" {
 }
 
 variable "zone" {
+  # Debe pertenecer a la región de la subred que utilizarán las VMs.
   description = "Zona por defecto para las instancias"
   type        = string
   default     = "europe-west1-b" # europe-southwest1-a 
 }
 
 variable "subnets" {
+  # La clave identifica la subred en Terraform; name define su nombre en GCP.
   description = "Mapa de subnets"
   type = map(object({
     name = string
@@ -39,6 +41,7 @@ variable "ingress_rules_list" {
 }
 
 variable "egress_rules_list" {
+  # Una lista vacía no crea reglas explícitas; no elimina el permiso de salida implícito de GCP.
   description = "Lista de reglas de firewall de salida"
   type = list(object({
     name               = string

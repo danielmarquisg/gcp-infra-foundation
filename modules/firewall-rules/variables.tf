@@ -11,6 +11,7 @@ variable "network_name" {
 }
 
 # Entrada
+# Si se omite target_tags, la regla se aplica a todas las VMs de la VPC.
 variable "ingress_rules" {
   description = "Lista de reglas de entrada (Ingress)"
   type = list(object({
@@ -25,6 +26,7 @@ variable "ingress_rules" {
 }
 
 # Salida
+# destination_ranges limita destinos; target_tags selecciona las VMs desde las que sale el tráfico.
 variable "egress_rules" {
   description = "Lista de reglas de salida (Egress)"
   type = list(object({

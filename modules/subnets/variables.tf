@@ -23,6 +23,8 @@ variable "subnets" {
   }))
 
   validation {
+    # can convierte un CIDR IPv4 inválido en false; alltrue exige que todos sean válidos.
+    # Esta validación comprueba el formato, no si los rangos de dos subredes se solapan.
     condition = alltrue([
       for subnet in values(var.subnets) : can(cidrnetmask(subnet.cidr))
     ])

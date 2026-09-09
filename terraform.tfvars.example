@@ -6,8 +6,10 @@
 project_id = "your-gcp-project-id"
 region     = "europe-west1"
 zone       = "europe-west1-b"
+# Si cambias la región, elige también una zona que pertenezca a ella.
 
 # --- Red (Subnets) ---
+# frontend/backend son claves usadas por main.tf; name es el nombre visible en GCP.
 subnets = {
   frontend = {
     name = "subnet-frontend"
@@ -24,6 +26,7 @@ subnets = {
 ingress_rules_list = [
 
   # CAPA 0: GESTIÓN (SSH Seguro)
+  # El firewall permite el túnel; el usuario también necesita los permisos IAM de IAP y OS Login.
   {
     name          = "allow-ssh-iap"
     description   = "Acceso SSH seguro mediante Google IAP"
@@ -38,7 +41,7 @@ ingress_rules_list = [
     source_ranges = ["10.10.0.0/16"]
     target_tags   = ["frontend-web", "backend-app"]
     protocol      = "icmp"
-    ports         = []
+    ports         = [] # ICMP no utiliza puertos TCP/UDP.
   },
 
   # CAPA 1: FRONTEND (Acceso Público)
@@ -63,6 +66,8 @@ ingress_rules_list = [
 ]
 
 # Reglas de salida
+# Esta regla no restringe por sí sola la salida a 80/443: GCP también tiene un permiso implícito de salida.
+# Para que las VMs sin IP pública accedan a Internet falta configurar NAT u otra salida equivalente.
 egress_rules_list = [
   {
     name               = "allow-egress-internet"

@@ -1,4 +1,6 @@
 # Copia este archivo como backend.hcl y sustituye el bucket.
 # backend.hcl está excluido de Git.
+# Este archivo solo se usa con -backend-config=backend.hcl al inicializar un backend GCS activo.
+# prefix separa los archivos de estado dentro del bucket; no crea otro bucket.
 bucket = "your-terraform-state-bucket"
 prefix = "terraform/state"
