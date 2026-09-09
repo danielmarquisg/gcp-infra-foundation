@@ -59,4 +59,5 @@ jobs:
 
       - name: Run TFLint
         # Incluye los módulos; compact produce mensajes compatibles con las anotaciones de la acción.
-        run: tflint --recursive --format compact
+        # Usamos una ruta absoluta para que todos los módulos carguen también las reglas de Google.
+        run: tflint --recursive --config "$(pwd)/.tflint.hcl" --format compact
