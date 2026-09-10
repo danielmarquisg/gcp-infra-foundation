@@ -28,6 +28,11 @@ output "firewall_rules_created" {
   value       = module.firewall-rules.created_rules
 }
 
+output "artifact_registry_url" {
+  description = "Ruta base del repositorio Docker de Artifact Registry"
+  value       = module.artifact_registry.repository_url
+}
+
 output "frontend_web_info" {
   description = "IPs Públicas e Internas de los servidores Web"
   value       = module.web_instances.instances_info
