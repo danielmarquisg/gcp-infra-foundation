@@ -29,6 +29,15 @@ module "firewall-rules" {
   egress_rules  = var.egress_rules_list
 }
 
+# Almacén privado para las imágenes que ejecutarán las VMs reemplazables.
+module "artifact_registry" {
+  source = "./modules/artifact-registry"
+
+  project_id    = var.project_id
+  region        = var.region
+  repository_id = "workspace-images"
+}
+
 # ==============================================================================
 # CAPA DE INFRAESTRUCTURA 1: PERSISTENCIA (PENDIENTE)
 # Espacio previsto para datos con un ciclo de vida independiente de las aplicaciones.
