@@ -38,6 +38,16 @@ module "artifact_registry" {
   repository_id = "workspace-images"
 }
 
+# Las futuras VMs usarán esta identidad para descargar la imagen sin claves estáticas.
+module "web_runtime_identity" {
+  source = "./modules/vm-runtime-identity"
+
+  project_id          = var.project_id
+  account_id          = "workspace-web-runtime"
+  repository_location = var.region
+  repository_id       = module.artifact_registry.repository_id
+}
+
 # ==============================================================================
 # CAPA DE INFRAESTRUCTURA 1: PERSISTENCIA (PENDIENTE)
 # Espacio previsto para datos con un ciclo de vida independiente de las aplicaciones.
