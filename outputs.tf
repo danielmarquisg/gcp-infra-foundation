@@ -33,6 +33,11 @@ output "artifact_registry_url" {
   value       = module.artifact_registry.repository_url
 }
 
+output "web_runtime_service_account_email" {
+  description = "Correo de la identidad utilizada por las VMs de la aplicación web"
+  value       = module.web_runtime_identity.service_account_email
+}
+
 output "frontend_web_info" {
   description = "IPs Públicas e Internas de los servidores Web"
   value       = module.web_instances.instances_info
