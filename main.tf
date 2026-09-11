@@ -5,11 +5,22 @@
 # Revisar el plan al cambiarla: algunos atributos se actualizan y otros requieren reemplazo.
 # ==============================================================================
 
+# Compute Engine proporciona la red, las VMs, el MIG y el balanceador de este proyecto.
+module "project_services" {
+  source = "./modules/project-services"
+
+  project_id = var.project_id
+  services   = ["compute.googleapis.com"]
+}
+
 module "vpc" {
   source       = "./modules/vpc"
   project_id   = var.project_id
   network_name = "${var.project_id}-vpc"
   routing_mode = "REGIONAL"
+
+  # Evita intentar crear la red mientras la API de Compute Engine sigue deshabilitada.
+  depends_on = [module.project_services]
 }
 
 module "subnets" {
