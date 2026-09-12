@@ -22,59 +22,29 @@ subnets = {
 }
 
 # --- Seguridad (Firewall) ---
-# Reglas de entrada
+# Reglas de entrada para las futuras VMs privadas del MIG.
 ingress_rules_list = [
-
-  # CAPA 0: GESTIÓN (SSH Seguro)
-  # El firewall permite el túnel; el usuario también necesita los permisos IAM de IAP y OS Login.
+  # IAP permite diagnosticar una VM sin asignarle una IP pública.
   {
     name          = "allow-ssh-iap"
     description   = "Acceso SSH seguro mediante Google IAP"
     source_ranges = ["35.235.240.0/20"] # Rango oficial de Google IAP
-    target_tags   = ["frontend-web", "backend-app"]
+    target_tags   = ["workspace-web-backend"]
     protocol      = "tcp"
     ports         = ["22"]
   },
-  {
-    name          = "allow-internal-icmp"
-    description   = "Permite ICMP entre subredes privadas"
-    source_ranges = ["10.10.0.0/16"]
-    target_tags   = ["frontend-web", "backend-app"]
-    protocol      = "icmp"
-    ports         = [] # ICMP no utiliza puertos TCP/UDP.
-  },
 
-  # CAPA 1: FRONTEND (Acceso Público)
+  # Solo los proxies y health checks de Google pueden alcanzar Nginx en las VMs.
   {
-    name          = "allow-http-web-public"
-    description   = "Acceso HTTP y HTTPS público al frontend"
-    source_ranges = ["0.0.0.0/0"]
-    target_tags   = ["frontend-web"]
+    name          = "allow-load-balancer-to-web"
+    description   = "Tráfico HTTP del balanceador y sus health checks"
+    source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
+    target_tags   = ["workspace-web-backend"]
     protocol      = "tcp"
-    ports         = ["80", "443"]
-  },
-
-  # CAPA 2: BACKEND (Tráfico Interno)
-  {
-    name          = "allow-internal-web-to-app"
-    description   = "Tráfico interno del frontend al backend"
-    source_ranges = ["10.10.10.0/24"] # Solo tráfico desde la subnet frontend
-    target_tags   = ["backend-app"]    # Solo aplica a las máquinas backend
-    protocol      = "tcp"
-    ports         = ["5000"]
+    ports         = ["80"]
   }
 ]
 
-# Reglas de salida
-# Esta regla no restringe por sí sola la salida a 80/443: GCP también tiene un permiso implícito de salida.
-# Para que las VMs sin IP pública accedan a Internet falta configurar NAT u otra salida equivalente.
-egress_rules_list = [
-  {
-    name               = "allow-egress-internet"
-    description        = "Permite salida HTTP y HTTPS para actualizaciones"
-    destination_ranges = ["0.0.0.0/0"]
-    target_tags        = ["frontend-web", "backend-app"]
-    protocol           = "tcp"
-    ports              = ["80", "443"]
-  }
-]
+# No añadimos una regla redundante: GCP ya permite la salida de forma implícita.
+# Las reglas de firewall no proporcionan NAT a una VM privada.
+egress_rules_list = []
