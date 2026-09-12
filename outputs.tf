@@ -37,14 +37,3 @@ output "web_runtime_service_account_email" {
   description = "Correo de la identidad utilizada por las VMs de la aplicación web"
   value       = module.web_runtime_identity.service_account_email
 }
-
-output "frontend_web_info" {
-  description = "IPs Públicas e Internas de los servidores Web"
-  value       = module.web_instances.instances_info
-}
-
-output "backend_internal_info" {
-  # Conserva el mismo esquema de salida que las VMs públicas, con public_ip = null.
-  description = "Solo IPs Internas de los servidores de Backend"
-  value       = module.app_instances.instances_info
-}
