@@ -27,29 +27,3 @@ variable "subnets" {
   }))
 
 }
-
-variable "ingress_rules_list" {
-  description = "Lista de reglas de firewall de entrada"
-  type = list(object({
-    name          = string
-    description   = optional(string)
-    source_ranges = list(string)
-    target_tags   = optional(list(string))
-    protocol      = string
-    ports         = list(string)
-  }))
-}
-
-variable "egress_rules_list" {
-  # Una lista vacía no crea reglas explícitas; no elimina el permiso de salida implícito de GCP.
-  description = "Lista de reglas de firewall de salida"
-  type = list(object({
-    name               = string
-    description        = optional(string)
-    destination_ranges = list(string)
-    target_tags        = optional(list(string))
-    protocol           = string
-    ports              = list(string)
-  }))
-  default = []
-}
