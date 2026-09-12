@@ -68,40 +68,6 @@ module "web_runtime_identity" {
 # [TODO:] module "cloud_sql" { ... }
 
 # ==============================================================================
-# CAPA DE INFRAESTRUCTURA 2: MÁQUINAS PARA LAS APLICACIONES
-# Los nombres representan roles de ejemplo; este código no instala Nginx ni Flask.
+# CAPA DE INFRAESTRUCTURA 2: EJECUCIÓN ESCALABLE (PENDIENTE)
+# Las VMs se crearán desde una plantilla y un MIG, no como servidores individuales.
 # ==============================================================================
-
-# --- Ejemplo de máquinas con IP pública ---
-module "web_instances" {
-  source = "./modules/instances"
-
-  project_id = var.project_id
-  zone       = var.zone
-
-  name_prefix    = "frontend-nginx"
-  instance_count = 2
-  machine_type   = "e2-micro"
-
-  # Esta clave debe existir en var.subnets; es la clave del mapa, no el nombre en GCP.
-  subnet_self_link = module.subnets.subnets["frontend"].self_link
-  tags             = ["frontend-web"]
-  enable_public_ip = true
-}
-
-# --- Ejemplo de máquinas sin IP pública ---
-module "app_instances" {
-  source = "./modules/instances"
-
-  project_id = var.project_id
-  zone       = var.zone
-
-  name_prefix    = "backend-flask"
-  instance_count = 2
-  machine_type   = "e2-medium"
-
-  # Al renombrar esta clave en var.subnets, hay que actualizar también esta referencia.
-  subnet_self_link = module.subnets.subnets["backend"].self_link
-  tags             = ["backend-app"]
-  enable_public_ip = false
-}
