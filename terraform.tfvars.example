@@ -20,31 +20,3 @@ subnets = {
     cidr = "10.10.20.0/24"
   }
 }
-
-# --- Seguridad (Firewall) ---
-# Reglas de entrada para las futuras VMs privadas del MIG.
-ingress_rules_list = [
-  # IAP permite diagnosticar una VM sin asignarle una IP pública.
-  {
-    name          = "allow-ssh-iap"
-    description   = "Acceso SSH seguro mediante Google IAP"
-    source_ranges = ["35.235.240.0/20"] # Rango oficial de Google IAP
-    target_tags   = ["workspace-web-backend"]
-    protocol      = "tcp"
-    ports         = ["22"]
-  },
-
-  # Solo los proxies y health checks de Google pueden alcanzar Nginx en las VMs.
-  {
-    name          = "allow-load-balancer-to-web"
-    description   = "Tráfico HTTP del balanceador y sus health checks"
-    source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
-    target_tags   = ["workspace-web-backend"]
-    protocol      = "tcp"
-    ports         = ["80"]
-  }
-]
-
-# No añadimos una regla redundante: GCP ya permite la salida de forma implícita.
-# Las reglas de firewall no proporcionan NAT a una VM privada.
-egress_rules_list = []

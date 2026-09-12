@@ -32,14 +32,6 @@ module "subnets" {
   subnets      = var.subnets
 }
 
-module "firewall-rules" {
-  source        = "./modules/firewall-rules"
-  project_id    = var.project_id
-  network_name  = module.vpc.network_name
-  ingress_rules = var.ingress_rules_list
-  egress_rules  = var.egress_rules_list
-}
-
 # Almacén privado para las imágenes que ejecutarán las VMs reemplazables.
 module "artifact_registry" {
   source = "./modules/artifact-registry"
