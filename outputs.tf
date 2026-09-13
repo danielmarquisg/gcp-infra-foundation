@@ -37,3 +37,11 @@ output "web_runtime_service_account_email" {
   description = "Correo de la identidad utilizada por las VMs de la aplicación web"
   value       = module.web_runtime_identity.service_account_email
 }
+
+output "web_instance_template" {
+  description = "Plantilla inmutable que utilizará el futuro Managed Instance Group"
+  value = {
+    name      = module.web_instance_template.name
+    self_link = module.web_instance_template.self_link
+  }
+}
