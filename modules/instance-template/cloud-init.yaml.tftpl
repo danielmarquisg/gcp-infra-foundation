@@ -1,0 +1,35 @@
+#cloud-config
+
+write_files:
+  - path: /etc/systemd/system/workspace-web.service
+    owner: root:root
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Workspace Web container
+      Wants=gcr-online.target docker.service
+      After=gcr-online.target docker.service
+
+      [Service]
+      Type=simple
+      Environment="HOME=/home/workspace-web"
+
+      # La VM usa su propia identidad para autenticarse; no necesita una clave JSON.
+      ExecStartPre=/usr/bin/mkdir -p /home/workspace-web
+      ExecStartPre=/usr/bin/docker-credential-gcr configure-docker --registries=${container_registry_host}
+      ExecStartPre=-/usr/bin/docker rm --force workspace-web
+      ExecStartPre=/usr/bin/docker pull ${container_image}
+
+      # La red del host publica directamente en la VM el puerto 80 de Nginx.
+      ExecStart=/usr/bin/docker run --rm --name workspace-web --network host ${container_image}
+      ExecStop=/usr/bin/docker stop --time 10 workspace-web
+      Restart=always
+      RestartSec=5
+
+      [Install]
+      WantedBy=multi-user.target
+
+runcmd:
+  - systemctl daemon-reload
+  # En COS cloud-init se ejecuta en cada arranque, por eso basta con iniciar el servicio.
+  - systemctl start workspace-web.service

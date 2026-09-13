@@ -18,6 +18,16 @@ variable "zone" {
   default     = "europe-west1-b" # europe-southwest1-a 
 }
 
+variable "workspace_web_image_digest" {
+  description = "Digest SHA-256 de la imagen inmutable que ejecutarán las VMs web"
+  type        = string
+
+  validation {
+    condition     = can(regex("^sha256:[0-9a-f]{64}$", var.workspace_web_image_digest))
+    error_message = "workspace_web_image_digest debe tener el formato sha256 seguido de 64 caracteres hexadecimales."
+  }
+}
+
 variable "subnets" {
   # La clave identifica la subred en Terraform; name define su nombre en GCP.
   description = "Mapa de subnets"

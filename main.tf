@@ -60,6 +60,19 @@ module "web_runtime_identity" {
 # [TODO:] module "cloud_sql" { ... }
 
 # ==============================================================================
-# CAPA DE INFRAESTRUCTURA 2: EJECUCIÓN ESCALABLE (PENDIENTE)
+# CAPA DE INFRAESTRUCTURA 2: EJECUCIÓN ESCALABLE (EN DESARROLLO)
 # Las VMs se crearán desde una plantilla y un MIG, no como servidores individuales.
 # ==============================================================================
+
+# La plantilla describe cómo debe nacer cualquier VM del futuro grupo administrado.
+module "web_instance_template" {
+  source = "./modules/instance-template"
+
+  project_id            = var.project_id
+  name_prefix           = "workspace-web"
+  machine_type          = "e2-micro"
+  subnetwork_self_link  = module.subnets.subnets["web"].self_link
+  service_account_email = module.web_runtime_identity.service_account_email
+  container_image       = "${module.artifact_registry.repository_url}/workspace-web@${var.workspace_web_image_digest}"
+  network_tags          = [local.workspace_web_network_tag]
+}

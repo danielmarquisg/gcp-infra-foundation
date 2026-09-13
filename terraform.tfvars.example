@@ -8,15 +8,14 @@ region     = "europe-west1"
 zone       = "europe-west1-b"
 # Si cambias la región, elige también una zona que pertenezca a ella.
 
+# Sustituye este valor por el digest publicado por Docker al subir workspace-web.
+workspace_web_image_digest = "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+
 # --- Red (Subnets) ---
-# frontend/backend son claves usadas por main.tf; name es el nombre visible en GCP.
+# web es la clave usada por main.tf; name es el nombre visible en GCP.
 subnets = {
-  frontend = {
-    name = "subnet-frontend"
+  web = {
+    name = "subnet-web"
     cidr = "10.10.10.0/24"
-  }
-  backend = {
-    name = "subnet-backend"
-    cidr = "10.10.20.0/24"
   }
 }
