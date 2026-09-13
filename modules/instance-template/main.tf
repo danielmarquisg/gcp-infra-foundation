@@ -40,7 +40,10 @@ resource "google_compute_instance_template" "web" {
   }
 
   metadata = {
+    # Centraliza el acceso SSH en IAM y evita repartir claves entre VMs reemplazables.
     "enable-oslogin" = "TRUE"
+
+    # COS interpreta este contenido en cada arranque para recuperar el estado deseado.
     "user-data" = templatefile("${path.module}/cloud-init.yaml.tftpl", {
       container_image         = var.container_image
       container_registry_host = local.container_registry_host
@@ -48,8 +51,13 @@ resource "google_compute_instance_template" "web" {
   }
 
   shielded_instance_config {
-    enable_secure_boot          = true
-    enable_vtpm                 = true
+    # Solo permite arrancar componentes firmados y de confianza.
+    enable_secure_boot = true
+
+    # El TPM virtual conserva las mediciones utilizadas para verificar el arranque.
+    enable_vtpm = true
+
+    # Informa si el estado del arranque difiere de la referencia esperada.
     enable_integrity_monitoring = true
   }
 
