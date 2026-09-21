@@ -54,3 +54,8 @@ output "web_mig" {
     target_size              = module.web_mig.target_size
   }
 }
+
+output "web_lb_health_check_self_link" {
+  description = "URI del health check HTTP utilizado por el balanceador"
+  value       = google_compute_health_check.web_lb.self_link
+}
