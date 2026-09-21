@@ -20,7 +20,7 @@ El balanceador será el único punto de entrada público. Las VM compartirán un
 
 ## Estado del proyecto
 
-Los checks representan funcionalidades implementadas en el repositorio. Actualmente, en GCP solo están aplicados Artifact Registry y la imagen `workspace-web:0.2`.
+Los checks representan funcionalidades implementadas en el repositorio, no necesariamente servicios en ejecución. En GCP ya están aplicados la red, el firewall, Artifact Registry, la identidad de las VM, la Instance Template y el MIG, configurado con cero instancias. La imagen `workspace-web:0.2` está publicada en Artifact Registry.
 
 - [x] Foundation modular con VPC, subredes y firewall.
 - [x] Primera implementación con VM individuales, públicas y privadas.
@@ -28,9 +28,9 @@ Los checks representan funcionalidades implementadas en el repositorio. Actualme
 - [x] Repositorio privado de imágenes en Artifact Registry.
 - [x] Identidad dedicada con permisos mínimos de lectura.
 - [x] Política de firewall versionada para IAP y el balanceador.
-- [ ] Instance Template basada en la imagen publicada.
-- [ ] Managed Instance Group con VM privadas y reemplazables.
-- [ ] Health check del servicio.
+- [x] Instance Template basada en la imagen publicada.
+- [x] Managed Instance Group configurado para crear VM privadas y reemplazables.
+- [x] Health check HTTP definido para la web.
 - [ ] External Application Load Balancer.
 - [ ] Política de autoescalado.
 - [ ] Despliegue y prueba del recorrido completo.
