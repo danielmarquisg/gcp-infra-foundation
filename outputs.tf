@@ -45,3 +45,12 @@ output "web_instance_template" {
     self_link = module.web_instance_template.self_link
   }
 }
+
+output "web_mig" {
+  description = "Grupo administrado utilizado por el balanceador"
+  value = {
+    name                     = module.web_mig.name
+    instance_group_self_link = module.web_mig.instance_group_self_link
+    target_size              = module.web_mig.target_size
+  }
+}

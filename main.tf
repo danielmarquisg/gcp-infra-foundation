@@ -76,3 +76,15 @@ module "web_instance_template" {
   container_image       = "${module.artifact_registry.repository_url}/workspace-web@${var.workspace_web_image_digest}"
   network_tags          = [local.workspace_web_network_tag]
 }
+
+# El MIG crea y reemplaza VMs desde la plantilla para mantener el tamaño indicado.
+module "web_mig" {
+  source = "./modules/managed-instance-group"
+
+  project_id                  = var.project_id
+  zone                        = var.zone
+  name                        = "workspace-web-mig"
+  base_instance_name          = "workspace-web"
+  instance_template_self_link = module.web_instance_template.self_link
+  target_size                 = 0
+}
