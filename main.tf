@@ -68,9 +68,11 @@ module "web_runtime_identity" {
 module "web_instance_template" {
   source = "./modules/instance-template"
 
+  # Fijar la versión de COS evita reemplazar la plantilla por una actualización externa.
   project_id            = var.project_id
   name_prefix           = "workspace-web"
   machine_type          = "e2-micro"
+  source_image          = "projects/cos-cloud/global/images/cos-stable-121-18867-584-32"
   subnetwork_self_link  = module.subnets.subnets["web"].self_link
   service_account_email = module.web_runtime_identity.service_account_email
   container_image       = "${module.artifact_registry.repository_url}/workspace-web@${var.workspace_web_image_digest}"

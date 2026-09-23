@@ -16,6 +16,16 @@ variable "machine_type" {
   default     = "e2-micro"
 }
 
+variable "source_image" {
+  description = "Imagen concreta de Container-Optimized OS utilizada por la plantilla"
+  type        = string
+
+  validation {
+    condition     = can(regex("^projects/cos-cloud/global/images/cos-[a-z0-9-]+$", var.source_image))
+    error_message = "source_image debe identificar una imagen concreta del proyecto cos-cloud."
+  }
+}
+
 variable "subnetwork_self_link" {
   description = "Self link de la subred privada asociada a las instancias"
   type        = string

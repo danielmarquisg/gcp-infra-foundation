@@ -1,11 +1,5 @@
 # modules/instance-template/main.tf
 
-# La familia se resuelve a una imagen concreta de Container-Optimized OS al crear la plantilla.
-data "google_compute_image" "cos" {
-  project = "cos-cloud"
-  family  = "cos-stable"
-}
-
 locals {
   # El helper de credenciales necesita conocer el dominio del registro antes de descargar la imagen.
   container_registry_host = split("/", var.container_image)[0]
@@ -19,7 +13,7 @@ resource "google_compute_instance_template" "web" {
   tags         = sort(tolist(var.network_tags))
 
   disk {
-    source_image = data.google_compute_image.cos.self_link
+    source_image = var.source_image
     auto_delete  = true
     boot         = true
     disk_size_gb = var.boot_disk_size_gb
