@@ -64,3 +64,8 @@ output "web_backend_service_self_link" {
   description = "URI del servicio backend que conecta el balanceador con el MIG"
   value       = google_compute_backend_service.web.self_link
 }
+
+output "web_url_map_self_link" {
+  description = "URI del mapa que dirige las peticiones al servicio backend web"
+  value       = google_compute_url_map.web.self_link
+}
