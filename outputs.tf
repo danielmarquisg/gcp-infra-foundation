@@ -69,3 +69,8 @@ output "web_url_map_self_link" {
   description = "URI del mapa que dirige las peticiones al servicio backend web"
   value       = google_compute_url_map.web.self_link
 }
+
+output "web_http_proxy_self_link" {
+  description = "URI del proxy HTTP que conecta el frontend con el mapa de URL"
+  value       = google_compute_target_http_proxy.web.self_link
+}
