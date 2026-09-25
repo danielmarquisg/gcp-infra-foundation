@@ -8,12 +8,16 @@ El diseño utiliza máquinas virtuales privadas y reemplazables dentro de un Man
 
 ```mermaid
 flowchart LR
-    Internet --> LB[External Application Load Balancer]
-    LB --> MIG[Managed Instance Group]
-    AR[Artifact Registry] --> Template[Instance Template]
+    Internet --> Frontend[IP global + forwarding rule]
+    Frontend --> Proxy[HTTP proxy]
+    Proxy --> Routes[URL map]
+    Routes --> Backend[Backend service]
+    Backend --> MIG[Managed Instance Group]
+    Health[Health check] --> Backend
     Template --> MIG
     Autoscaler --> MIG
     MIG --> VMs[VM privadas con workspace-web]
+    AR[Artifact Registry] --> VMs
 ```
 
 El balanceador será el único punto de entrada público. Las VM compartirán una plantilla y podrán reemplazarse automáticamente: se administran como ganado, no como mascotas.
@@ -31,7 +35,9 @@ Los checks representan funcionalidades implementadas en el repositorio, no neces
 - [x] Instance Template basada en la imagen publicada.
 - [x] Managed Instance Group configurado para crear VM privadas y reemplazables.
 - [x] Health check HTTP definido para la web.
-- [ ] External Application Load Balancer.
+- [x] Backend service conectado al MIG.
+- [x] Mapa de URL y proxy HTTP del balanceador.
+- [ ] Frontend público con IP global y forwarding rule.
 - [ ] Política de autoescalado.
 - [ ] Despliegue y prueba del recorrido completo.
 
@@ -46,11 +52,17 @@ Los checks representan funcionalidades implementadas en el repositorio, no neces
 | `firewall.tf` | Define la política de acceso del proyecto. |
 | `modules/artifact-registry` | Gestiona el repositorio de imágenes Docker. |
 | `modules/vm-runtime-identity` | Crea la identidad utilizada por las VM. |
+| `modules/instance-template` | Define la plantilla inmutable de las VM web. |
+| `modules/managed-instance-group` | Mantiene el grupo de VM reemplazables. |
+| `health-check.tf` | Comprueba si la aplicación web responde por HTTP. |
+| `backend-service.tf` | Conecta el balanceador con el MIG y utiliza el health check. |
+| `url-map.tf` | Envía el tráfico al backend service web. |
+| `http-proxy.tf` | Conecta el frontend HTTP con el mapa de URL. |
 
 ## Seguridad
 
-- Las VM no tendrán IP pública.
-- SSH estará limitado a Google IAP.
-- El puerto `80` solo aceptará tráfico del balanceador y sus health checks.
+- Las VM creadas por el MIG no reciben IP pública.
+- SSH está limitado a Google IAP.
+- El puerto `80` solo acepta tráfico del balanceador y sus health checks.
 - La identidad de las VM solo puede leer imágenes de `workspace-images`.
 - La política de firewall está versionada en `firewall.tf`.
