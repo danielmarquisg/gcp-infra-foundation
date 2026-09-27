@@ -74,3 +74,13 @@ output "web_http_proxy_self_link" {
   description = "URI del proxy HTTP que conecta el frontend con el mapa de URL"
   value       = google_compute_target_http_proxy.web.self_link
 }
+
+output "web_public_ip" {
+  description = "Dirección IPv4 pública del balanceador web"
+  value       = google_compute_global_address.web.address
+}
+
+output "web_forwarding_rule_self_link" {
+  description = "URI de la regla que envía el tráfico HTTP público al proxy"
+  value       = google_compute_global_forwarding_rule.web_http.self_link
+}
