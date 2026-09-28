@@ -6,6 +6,9 @@ resource "google_compute_global_address" "web" {
   description  = "Dirección IPv4 pública y estable del balanceador web"
   address_type = "EXTERNAL"
   ip_version   = "IPV4"
+
+  # Evita reservar la dirección mientras Compute Engine sigue habilitándose.
+  depends_on = [module.project_services]
 }
 
 resource "google_compute_global_forwarding_rule" "web_http" {

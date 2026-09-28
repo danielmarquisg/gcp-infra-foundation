@@ -14,4 +14,7 @@ resource "google_compute_health_check" "web_lb" {
     port         = 80
     request_path = "/"
   }
+
+  # En un proyecto nuevo, espera a que Compute Engine esté disponible.
+  depends_on = [module.project_services]
 }
