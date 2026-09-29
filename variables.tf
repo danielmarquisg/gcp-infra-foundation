@@ -36,4 +36,9 @@ variable "subnets" {
     cidr = string
   }))
 
+  validation {
+    # La plantilla web selecciona esta subred por su clave en main.tf.
+    condition     = contains(keys(var.subnets), "web")
+    error_message = "subnets debe incluir la clave \"web\" para la subred utilizada por las VMs web."
+  }
 }
