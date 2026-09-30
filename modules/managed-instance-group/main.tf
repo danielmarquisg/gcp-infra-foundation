@@ -14,6 +14,17 @@ resource "google_compute_instance_group_manager" "web" {
   # Número de instancias que mantiene el grupo.
   target_size = var.target_size
 
+  update_policy {
+    # Sustituye las VMs existentes cuando cambia la plantilla, sin actualizarlas a mano.
+    type               = "PROACTIVE"
+    minimal_action     = "REPLACE"
+    replacement_method = "SUBSTITUTE"
+
+    # Crea una VM adicional antes de retirar la anterior.
+    max_surge_fixed       = 1
+    max_unavailable_fixed = 0
+  }
+
   named_port {
     # El balanceador usará este nombre para resolver el puerto HTTP del contenedor.
     name = "http"
