@@ -25,6 +25,16 @@ resource "google_compute_instance_group_manager" "web" {
     max_unavailable_fixed = 0
   }
 
+  dynamic "auto_healing_policies" {
+    # La política es opcional para reutilizar el módulo sin autohealing en otros grupos.
+    for_each = var.autohealing == null ? [] : [var.autohealing]
+
+    content {
+      health_check      = auto_healing_policies.value.health_check_self_link
+      initial_delay_sec = auto_healing_policies.value.initial_delay_sec
+    }
+  }
+
   named_port {
     # El balanceador usará este nombre para resolver el puerto HTTP del contenedor.
     name = "http"

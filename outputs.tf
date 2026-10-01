@@ -60,6 +60,11 @@ output "web_lb_health_check_self_link" {
   value       = google_compute_health_check.web_lb.self_link
 }
 
+output "web_autohealing_health_check_self_link" {
+  description = "URI del health check HTTP utilizado por el MIG para recrear VMs unhealthy"
+  value       = google_compute_health_check.web_autohealing.self_link
+}
+
 output "web_backend_service_self_link" {
   description = "URI del servicio backend que conecta el balanceador con el MIG"
   value       = google_compute_backend_service.web.self_link
