@@ -35,3 +35,21 @@ variable "target_size" {
     error_message = "target_size debe ser un número entero no negativo."
   }
 }
+
+variable "autohealing" {
+  description = "Health check y margen de arranque para recrear VMs unhealthy; null desactiva la política"
+  type = object({
+    health_check_self_link = string
+    initial_delay_sec      = optional(number, 300)
+  })
+  default = null
+
+  validation {
+    condition = var.autohealing == null ? true : (
+      var.autohealing.initial_delay_sec >= 0 &&
+      var.autohealing.initial_delay_sec <= 3600 &&
+      floor(var.autohealing.initial_delay_sec) == var.autohealing.initial_delay_sec
+    )
+    error_message = "initial_delay_sec debe ser un número entero entre 0 y 3600 segundos."
+  }
+}

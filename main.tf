@@ -89,4 +89,10 @@ module "web_mig" {
   base_instance_name          = "workspace-web"
   instance_template_self_link = module.web_instance_template.self_link
   target_size                 = 0
+
+  autohealing = {
+    health_check_self_link = google_compute_health_check.web_autohealing.self_link
+    # Da tiempo a descargar la imagen y arrancar Nginx sin recrear la VM antes de estar lista.
+    initial_delay_sec = 300
+  }
 }
