@@ -10,7 +10,12 @@ output "instance_group_self_link" {
   value       = google_compute_instance_group_manager.web.instance_group
 }
 
+output "instance_group_manager_self_link" {
+  description = "URI del administrador del MIG utilizado por el autoscaler"
+  value       = google_compute_instance_group_manager.web.self_link
+}
+
 output "target_size" {
-  description = "Número de instancias que debe mantener el grupo"
+  description = "Tamaño objetivo observado del grupo"
   value       = google_compute_instance_group_manager.web.target_size
 }

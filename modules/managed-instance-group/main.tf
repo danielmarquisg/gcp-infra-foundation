@@ -11,7 +11,7 @@ resource "google_compute_instance_group_manager" "web" {
     instance_template = var.instance_template_self_link
   }
 
-  # Número de instancias que mantiene el grupo.
+  # Con un número Terraform fija el tamaño; con null lo deja en manos del autoscaler.
   target_size = var.target_size
 
   update_policy {

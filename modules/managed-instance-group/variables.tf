@@ -26,13 +26,15 @@ variable "instance_template_self_link" {
 }
 
 variable "target_size" {
-  description = "Número de VMs que el grupo debe mantener"
+  description = "Tamaño fijo del grupo; null permite que lo gestione un autoscaler"
   type        = number
   default     = 0
 
   validation {
-    condition     = var.target_size >= 0 && floor(var.target_size) == var.target_size
-    error_message = "target_size debe ser un número entero no negativo."
+    condition = var.target_size == null ? true : (
+      var.target_size >= 0 && floor(var.target_size) == var.target_size
+    )
+    error_message = "target_size debe ser null o un número entero no negativo."
   }
 }
 

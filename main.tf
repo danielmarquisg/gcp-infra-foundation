@@ -79,7 +79,7 @@ module "web_instance_template" {
   network_tags          = [local.workspace_web_network_tag]
 }
 
-# El MIG crea y reemplaza VMs desde la plantilla para mantener el tamaño indicado.
+# El MIG crea y reemplaza VMs desde la plantilla; el autoscaler ajusta su número.
 module "web_mig" {
   source = "./modules/managed-instance-group"
 
@@ -88,7 +88,9 @@ module "web_mig" {
   name                        = "workspace-web-mig"
   base_instance_name          = "workspace-web"
   instance_template_self_link = module.web_instance_template.self_link
-  target_size                 = 0
+
+  # No fijamos un tamaño para que Terraform no revierta las decisiones del autoscaler.
+  target_size = null
 
   autohealing = {
     health_check_self_link = google_compute_health_check.web_autohealing.self_link
