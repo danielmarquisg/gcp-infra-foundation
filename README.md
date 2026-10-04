@@ -2,7 +2,7 @@
 
 Infraestructura como código con Terraform para ejecutar una carga web contenerizada en Google Cloud.
 
-El diseño utiliza máquinas virtuales privadas y reemplazables dentro de un Managed Instance Group (MIG), detrás de un balanceador de carga HTTP externo. El autoescalado está pendiente de implementación.
+El diseño utiliza VMs privadas y reemplazables dentro de un Managed Instance Group (MIG), detrás de un balanceador de carga HTTP externo. El grupo utiliza un health check para autohealing y una política de autoescalado por CPU.
 
 ## Arquitectura
 
@@ -16,18 +16,18 @@ flowchart LR
     HealthLB[Health check del balanceador] --> Backend
     HealthMIG[Health check de autohealing] --> MIG
     Template[Instance Template] --> MIG
-    Autoscaler[Autoscaler pendiente] -.-> MIG
+    Autoscaler[Autoscaler por CPU] --> MIG
     MIG --> VMs[VM privadas con workspace-web]
     AR[Artifact Registry] --> VMs
 ```
 
-El balanceador será el único punto de entrada público. Las VM compartirán una plantilla y podrán reemplazarse automáticamente: se administran como ganado, no como mascotas.
+El balanceador es el único punto de entrada público. Las VM comparten una plantilla y pueden reemplazarse automáticamente: se administran como ganado, no como mascotas.
 
 ## Estado del proyecto
 
-Los checks representan funcionalidades implementadas en el repositorio, no necesariamente servicios en ejecución. En GCP ya están aplicados la red, el firewall, Artifact Registry, la identidad de las VM, la Instance Template y el MIG, configurado con cero instancias. La imagen `workspace-web:0.2` está publicada en Artifact Registry.
+Los checks representan funcionalidades implementadas o pruebas completadas, no recursos activos en GCP.
 
-El balanceador HTTP y las políticas de actualización y autohealing están definidos en código, pero su despliegue y prueba siguen pendientes.
+Se ha probado el servicio en GCP con una VM `HEALTHY` y respuestas HTTP `200` a través del balanceador. El entorno se destruyó después de la prueba, incluido Artifact Registry con sus imágenes; no se mantiene un despliegue permanente.
 
 - [x] Foundation modular con VPC, subredes y firewall.
 - [x] Primera implementación con VM individuales, públicas y privadas.
@@ -35,7 +35,7 @@ El balanceador HTTP y las políticas de actualización y autohealing están defi
 - [x] Repositorio privado de imágenes en Artifact Registry.
 - [x] Identidad dedicada con permisos mínimos de lectura.
 - [x] Política de firewall versionada para IAP y el balanceador.
-- [x] Instance Template basada en la imagen publicada.
+- [x] Instance Template con COS y una imagen Docker fijada por digest.
 - [x] Managed Instance Group configurado para crear VM privadas y reemplazables.
 - [x] Actualización proactiva y gradual de las VM al cambiar la plantilla.
 - [x] Health check HTTP del balanceador.
@@ -43,8 +43,10 @@ El balanceador HTTP y las políticas de actualización y autohealing están defi
 - [x] Backend service conectado al MIG.
 - [x] Mapa de URL y proxy HTTP del balanceador.
 - [x] Frontend público con IP global y forwarding rule.
-- [ ] Política de autoescalado.
-- [ ] Despliegue y prueba del recorrido completo.
+- [x] Política de autoescalado por CPU.
+- [x] Despliegue y prueba HTTP a través del balanceador.
+- [ ] Prueba de autohealing ante un fallo controlado.
+- [ ] Prueba de aumento y reducción del número de VM por CPU.
 
 ## Componentes
 
@@ -64,6 +66,7 @@ El balanceador HTTP y las políticas de actualización y autohealing están defi
 | `url-map.tf` | Envía el tráfico al backend service web. |
 | `http-proxy.tf` | Conecta el frontend HTTP con el mapa de URL. |
 | `frontend.tf` | Define la IP global y la forwarding rule para recibir tráfico HTTP público. |
+| `autoscaler.tf` | Ajusta el tamaño del MIG según su uso medio de CPU. |
 
 ## Seguridad
 
