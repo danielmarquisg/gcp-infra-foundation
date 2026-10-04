@@ -1,6 +1,20 @@
 #cloud-config
 
 write_files:
+  - path: /etc/systemd/system/workspace-web-firewall.service
+    owner: root:root
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Workspace Web host firewall
+
+      [Service]
+      # COS bloquea HTTP por defecto; con --network host debemos permitir el puerto 80.
+      Type=oneshot
+      RemainAfterExit=yes
+      # Comprobamos la regla antes de añadirla para no duplicarla al reiniciar la unidad.
+      ExecStart=/bin/sh -c '/sbin/iptables -w -C INPUT -p tcp --dport 80 -j ACCEPT || /sbin/iptables -w -A INPUT -p tcp --dport 80 -j ACCEPT'
+
   - path: /etc/systemd/system/workspace-web.service
     owner: root:root
     permissions: "0644"
@@ -8,14 +22,16 @@ write_files:
       [Unit]
       Description=Workspace Web container
       Wants=gcr-online.target docker.service
-      After=gcr-online.target docker.service
+      # No arrancamos el contenedor si no se ha configurado el firewall interno.
+      Requires=workspace-web-firewall.service
+      After=gcr-online.target docker.service workspace-web-firewall.service
 
       [Service]
       Type=simple
       Environment="HOME=/home/workspace-web"
 
       # La VM usa su propia identidad para autenticarse; no necesita una clave JSON.
-      ExecStartPre=/usr/bin/mkdir -p /home/workspace-web
+      ExecStartPre=/bin/mkdir -p /home/workspace-web
       ExecStartPre=/usr/bin/docker-credential-gcr configure-docker --registries=${container_registry_host}
       ExecStartPre=-/usr/bin/docker rm --force workspace-web
       ExecStartPre=/usr/bin/docker pull ${container_image}
