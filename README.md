@@ -27,7 +27,7 @@ El balanceador es el único punto de entrada público. Las VM comparten una plan
 
 Los checks representan funcionalidades implementadas o pruebas completadas, no recursos activos en GCP.
 
-Se ha probado el servicio en GCP con una VM `HEALTHY`, respuestas HTTP `200` a través del balanceador y recuperación automática tras detener el servicio web. Los despliegues de prueba son temporales; no se mantiene un entorno permanente.
+Se ha probado el servicio en GCP con respuestas HTTP `200` a través del balanceador, recuperación automática tras detener el servicio web y autoescalado de `1 → 3 → 1` VM al generar y retirar carga de CPU. Los despliegues de prueba son temporales; no se mantiene un entorno permanente.
 
 - [x] Foundation modular con VPC, subredes y firewall.
 - [x] Primera implementación con VM individuales, públicas y privadas.
@@ -46,7 +46,7 @@ Se ha probado el servicio en GCP con una VM `HEALTHY`, respuestas HTTP `200` a t
 - [x] Política de autoescalado por CPU.
 - [x] Despliegue y prueba HTTP a través del balanceador.
 - [x] [Prueba de autohealing ante un fallo controlado](docs/tests/autohealing.md).
-- [ ] Prueba de aumento y reducción del número de VM por CPU.
+- [x] [Prueba de aumento y reducción del número de VM por CPU](docs/tests/autoscaling.md).
 
 ## Componentes
 
