@@ -1,8 +1,8 @@
 # root main.tf
 
 # ==============================================================================
-# CAPA DE INFRAESTRUCTURA 0: RED
-# Revisar el plan al cambiarla: algunos atributos se actualizan y otros requieren reemplazo.
+# RED Y SERVICIOS BASE
+# Revisar el plan al cambiar la red: algunos atributos se actualizan y otros requieren reemplazo.
 # ==============================================================================
 
 # Compute Engine proporciona la red, las VMs, el MIG y el balanceador de este proyecto.
@@ -32,7 +32,7 @@ module "subnets" {
   subnets      = var.subnets
 }
 
-# Almacén privado para las imágenes que ejecutarán las VMs reemplazables.
+# Almacén privado para las imágenes que ejecutan las VMs reemplazables.
 module "artifact_registry" {
   source = "./modules/artifact-registry"
 
@@ -41,7 +41,7 @@ module "artifact_registry" {
   repository_id = "workspace-images"
 }
 
-# Las futuras VMs usarán esta identidad para descargar la imagen sin claves estáticas.
+# Las VMs usan esta identidad para descargar la imagen sin claves estáticas.
 module "web_runtime_identity" {
   source = "./modules/vm-runtime-identity"
 
@@ -52,19 +52,11 @@ module "web_runtime_identity" {
 }
 
 # ==============================================================================
-# CAPA DE INFRAESTRUCTURA 1: PERSISTENCIA (PENDIENTE)
-# Espacio previsto para datos con un ciclo de vida independiente de las aplicaciones.
+# EJECUCIÓN WEB ESCALABLE
+# Las VMs se crean desde una plantilla y el MIG gestiona su ciclo de vida.
 # ==============================================================================
 
-# --- Ejemplo futuro: base de datos privada en Cloud SQL ---
-# [TODO:] module "cloud_sql" { ... }
-
-# ==============================================================================
-# CAPA DE INFRAESTRUCTURA 2: EJECUCIÓN ESCALABLE (EN DESARROLLO)
-# Las VMs se crearán desde una plantilla y un MIG, no como servidores individuales.
-# ==============================================================================
-
-# La plantilla describe cómo debe nacer cualquier VM del futuro grupo administrado.
+# La plantilla define la configuración común de las VMs del MIG.
 module "web_instance_template" {
   source = "./modules/instance-template"
 
