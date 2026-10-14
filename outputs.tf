@@ -39,7 +39,7 @@ output "web_runtime_service_account_email" {
 }
 
 output "web_instance_template" {
-  description = "Plantilla inmutable que utilizará el futuro Managed Instance Group"
+  description = "Plantilla inmutable utilizada por el Managed Instance Group"
   value = {
     name      = module.web_instance_template.name
     self_link = module.web_instance_template.self_link

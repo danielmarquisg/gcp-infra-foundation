@@ -83,7 +83,9 @@ gcloud compute disks describe "$lab_boot_disk" \
 
 En nuestra prueba vimos HTTP `503` y `RECREATING / TIMEOUT`, y después HTTP `200` y `RUNNING / NONE / HEALTHY`. La operación `compute.instances.repair.recreateInstance` figuraba como `DONE` y el disco se había creado de nuevo durante la reparación.
 
-La VM conservó su ID y su fecha de creación: no hace falta que cambien para confirmar el autohealing. No medimos la duración exacta del corte ni probamos todavía el autoescalado por CPU.
+La VM conservó su ID y su fecha de creación: no hace falta que cambien para confirmar el autohealing. No medimos la duración exacta del corte.
+
+El aumento y la reducción del número de VMs por CPU se comprobaron después en la [prueba de autoescalado](autoscaling.md).
 
 ## Al terminar
 
