@@ -23,6 +23,8 @@ flowchart LR
 
 El balanceador es el único punto de entrada público. Las VM comparten una plantilla y pueden reemplazarse automáticamente: se administran como ganado, no como mascotas.
 
+El recorrido y su relación con el código están explicados en [Cómo funciona la infraestructura](docs/architecture.md).
+
 ## Estado del proyecto
 
 Los checks representan funcionalidades implementadas o pruebas completadas, no recursos activos en GCP.
