@@ -25,6 +25,8 @@ El balanceador es el único punto de entrada público. Las VM comparten una plan
 
 El recorrido y su relación con el código están explicados en [Cómo funciona la infraestructura](docs/architecture.md).
 
+Para levantarlo desde cero y retirarlo al terminar, consulta [Desplegar y borrar el entorno](docs/deployment.md).
+
 ## Estado del proyecto
 
 Los checks representan funcionalidades implementadas o pruebas completadas, no recursos activos en GCP.
