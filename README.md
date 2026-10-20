@@ -23,9 +23,7 @@ flowchart LR
 
 El balanceador es el único punto de entrada público. Las VM comparten una plantilla y pueden reemplazarse automáticamente: se administran como ganado, no como mascotas.
 
-El recorrido y su relación con el código están explicados en [Cómo funciona la infraestructura](docs/architecture.md).
-
-Para levantarlo desde cero y retirarlo al terminar, consulta [Desplegar y borrar el entorno](docs/deployment.md).
+En la [documentación](docs/README.md) encontrarás la explicación del diseño, las guías de despliegue y pruebas, y la referencia de configuración.
 
 ## Estado del proyecto
 

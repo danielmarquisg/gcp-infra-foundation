@@ -14,7 +14,7 @@ Si todavía no tienes `terraform.tfvars`, copia [el ejemplo](../terraform.tfvars
 test -f terraform.tfvars || cp terraform.tfvars.example terraform.tfvars
 ```
 
-Edita el proyecto, la región y la zona. Conserva la clave `web` en las subredes. El digest de ceros del ejemplo sirve para preparar el registro, pero hay que sustituirlo antes de desplegar las VMs.
+Edita el proyecto, la región y la zona. Los tipos, valores predeterminados y restricciones están en la [referencia de entradas](reference/configuration.md). Conserva la clave `web` en las subredes. El digest de ceros del ejemplo sirve para preparar el registro, pero hay que sustituirlo antes de desplegar las VMs.
 
 En esta terminal, pon el mismo proyecto y zona que en `terraform.tfvars`:
 

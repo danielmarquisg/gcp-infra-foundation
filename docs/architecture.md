@@ -50,7 +50,7 @@ Lo que comprobamos está recogido en las pruebas de [autohealing](tests/autoheal
 
 ## Qué ocurre al borrar el entorno
 
-Un `terraform destroy` completo elimina las VMs, el balanceador y también Artifact Registry con sus imágenes. El entorno se pueda borrar entero.
+Un `terraform destroy` completo elimina las VMs, el balanceador y también Artifact Registry con sus imágenes. El entorno se puede borrar entero.
 
 Para reconstruirlo, primero hay que crear el registro y volver a publicar la imagen. El código en Git no se borra, pero tampoco conserva por sí solo la imagen Docker. El borrado no elimina recursos ajenos a este estado ni los cargos ya generados.
 
