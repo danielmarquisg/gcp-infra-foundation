@@ -4,6 +4,8 @@ Estas son las cinco entradas de la configuración raíz. En el uso local las asi
 
 Las definiciones están en [variables.tf](../../variables.tf). Esta página recoge sus tipos y restricciones; los pasos para preparar y desplegar el entorno están en la [guía de despliegue](../deployment.md).
 
+Los datos que devuelve el despliegue están recogidos en la [referencia de outputs](outputs.md).
+
 ## Resumen
 
 | Variable | Tipo | Obligatoria | Valor predeterminado |
