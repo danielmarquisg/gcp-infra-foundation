@@ -17,5 +17,6 @@ Las pruebas incluyen los comandos, los resultados esperados y lo que observamos 
 ## Consultar la configuración
 
 - [Entradas de Terraform](reference/configuration.md): tipos, valores predeterminados y restricciones de las variables que acepta el proyecto.
+- [Outputs de Terraform](reference/outputs.md): qué devuelve cada salida y cómo consultarla desde la terminal o un script.
 
 Para una visión rápida del alcance y los componentes, vuelve al [README del proyecto](../README.md).
